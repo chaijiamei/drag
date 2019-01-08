@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap表单构造器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="基于Bootstrap的web表单构造器，通过拖拽组件的方式生成完整可用的表单">
+    <meta name="keywords" content="Bootstrap,Form,表单,拖拽">
+    <meta name="author" content="Bootstrap中文网">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css">
+    <script src="font/iconfont.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        /*#div1 {width:198px; height:66px;padding:10px;border:1px solid #aaaaaa;}*/
+        .box{width: 100%;height: 500px;border: 1px solid #d9d9d9;padding: 20px;}
+    </style>
+
+    <script type="text/javascript">
+        function allowDrop(ev)
+        {
+            ev.preventDefault();
+        }
+
+        function drag(ev)
+        {
+            ev.dataTransfer.setData("Text",ev.target.id);
+//            console.log(ev)
+        }
+
+        function drop(ev)
+        {
+            ev.preventDefault();
+            var data=ev.dataTransfer.getData("Text");
+            if(data=='drag1'){
+                ev.toElement.innerHTML = ev.toElement.innerHTML + '<div id="textUI" class="ivu-form-item items" style="display: block; width: auto;"> <label id="getName" class="ivu-form-item-label" style="width: 100px;">输入框：</label> <div class="ivu-form-item-content" style="margin-left: 100px;"> <div class="ivu-input-wrapper ivu-input-type"> <input id="getPlaceholder" type="text" placeholder="这是一个输入框" maxlength="20" class="ivu-input"> </div> <div class="item-icon"> <i onclick="deleteT(1)" style="font-size: 15px" class="iconfont">&#xe62f;</i> <i onclick="set(1)" style="font-size: 15px" class="iconfont">&#xe604;</i> </div> </div> <div id="modalShow" data-transfer="true" class="v-transfer-dom"> <div class="ivu-modal-mask"></div> <div class="ivu-modal-wrap"> <div class="ivu-modal" style="width: 520px;"> <div class="ivu-modal-content"> <a class="ivu-modal-close"> <i class="ivu-icon ivu-icon-ios-close-empty"></i> </a> <div class="ivu-modal-header"> <div class="ivu-modal-header-inner">配置输入框属性</div> </div> <div class="ivu-modal-body"> <form autocomplete="off" class="form_content ivu-form ivu-form-label-right"> <div class="ivu-form-item"> <label class="ivu-form-item-label" style="width: 80px;">控件名称：</label> <div class="ivu-form-item-content" style="margin-left: 80px;"> <div class="ivu-input-wrapper ivu-input-type"><!----> <!----> <input id="nameText" type="text" placeholder="请输入控件名称" maxlength="4" class="ivu-input"> <!----> </div> <!----> </div> </div> <div class="ivu-form-item"> <label class="ivu-form-item-label" style="width: 80px;">placeholder：</label> <div class="ivu-form-item-content" style="margin-left: 80px;"> <div class="ivu-input-wrapper ivu-input-type"><!----> <!----> <input id="namePlaceholder" type="text" placeholder="请输入placeholder" class="ivu-input"> <!----> </div> <!----> </div> </div> </form> </div> <div class="ivu-modal-footer"> <div> <button onclick="cancel(1)" type="button" class="ivu-btn ivu-btn-text"><!----> <!----> <span>取消</span> </button> <button onclick="sure(1)" type="button" class="ivu-btn ivu-btn-primary"><!----> <!----> <span>确定</span> </button> </div> </div> </div> </div> </div> </div> </div>'
+//
+            }else if(data=='drag2'){
+                ev.toElement.innerHTML = ev.toElement.innerHTML + '<div class="ivu-form-item-content" style="margin-left: 100px;margin-bottom: 24px;"> <button type="button" class="ivu-btn ivu-btn-primary"> <span>按钮</span> </button> </div>'
+//
+            }else if(data=='drag3'){
+                ev.toElement.innerHTML = ev.toElement.innerHTML + '<div class="ivu-form-item items" style="display: block; width: auto;" draggable="false"> <label class="ivu-form-item-label" style="width: 100px;">文本域：</label> <div class="ivu-form-item-content" style="margin-left: 100px;"> <div class="ivu-input-wrapper ivu-input-type"> <textarea wrap="soft" autocomplete="off" spellcheck="false" placeholder="这是一个文本域" rows="5" maxlength="200" class="ivu-input"></textarea> </div> </div> </div>'
+            }
+
+        }
+        function deleteT(i){
+            if(i==1){
+                var textUI = document.getElementById("textUI");
+                textUI.remove()
+            }
+
+        }
+        function set(i) {
+            if(i==1){
+                var modalShow = document.getElementById("modalShow");
+                modalShow.style.display='block';
+            }
+
+
+        }
+        function cancel(i) {
+            if(i==1){
+                var modalShow = document.getElementById("modalShow");
+                modalShow.style.display='none';
+            }
+        }
+        function sure(i) {
+            if(i==1){
+                var nameText = document.getElementById("nameText").value;
+                var namePlaceholder = document.getElementById("namePlaceholder").value;
+                document.getElementById("getName").innerHTML = nameText;
+                document.getElementById("getPlaceholder").placeholder = namePlaceholder;
+                var modalShow = document.getElementById("modalShow");
+                modalShow.style.display='none';
+
+
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row" >
+        <div class="col-sm-8">
+            <div class="box" id="div1" ondrop="drop(event)"
+                 ondragover="allowDrop(event)">
+                <h4>Your Form</h4>
+                <hr>
+                <!--<div id="textUI" class="ivu-form-item items" style="display: block; width: auto;">-->
+                    <!--<label id="getName" class="ivu-form-item-label" style="width: 100px;">输入框：</label>-->
+                    <!--<div class="ivu-form-item-content" style="margin-left: 100px;">-->
+                        <!--<div class="ivu-input-wrapper ivu-input-type">-->
+                            <!--<input id="getPlaceholder" type="text" placeholder="这是一个输入框" maxlength="20" class="ivu-input">-->
+                        <!--</div>-->
+                        <!--<div class="item-icon">-->
+                            <!--<i onclick="deleteT(1)" style="font-size: 15px" class="iconfont">&#xe62f;</i>-->
+                            <!--<i onclick="set(1)" style="font-size: 15px" class="iconfont">&#xe604;</i>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div id="modalShow" data-transfer="true" class="v-transfer-dom">-->
+                        <!--<div class="ivu-modal-mask"></div>-->
+                        <!--<div class="ivu-modal-wrap">-->
+                            <!--<div class="ivu-modal" style="width: 520px;">-->
+                                <!--<div class="ivu-modal-content">-->
+                                    <!--<a class="ivu-modal-close">-->
+                                        <!--<i class="ivu-icon ivu-icon-ios-close-empty"></i>-->
+                                    <!--</a>-->
+                                    <!--<div class="ivu-modal-header">-->
+                                        <!--<div class="ivu-modal-header-inner">配置输入框属性</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="ivu-modal-body">-->
+                                        <!--<form autocomplete="off" class="form_content ivu-form ivu-form-label-right">-->
+                                            <!--<div class="ivu-form-item">-->
+                                                <!--<label class="ivu-form-item-label" style="width: 80px;">控件名称：</label>-->
+                                                <!--<div class="ivu-form-item-content" style="margin-left: 80px;">-->
+                                                    <!--<div class="ivu-input-wrapper ivu-input-type">&lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt;-->
+                                                        <!--<input id="nameText" type="text" placeholder="请输入控件名称" maxlength="4" class="ivu-input"> &lt;!&ndash;&ndash;&gt;-->
+                                                    <!--</div> &lt;!&ndash;&ndash;&gt;-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="ivu-form-item">-->
+                                                <!--<label class="ivu-form-item-label" style="width: 80px;">placeholder：</label>-->
+                                                <!--<div class="ivu-form-item-content" style="margin-left: 80px;">-->
+                                                    <!--<div class="ivu-input-wrapper ivu-input-type">&lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt;-->
+                                                        <!--<input id="namePlaceholder" type="text" placeholder="请输入placeholder" class="ivu-input"> &lt;!&ndash;&ndash;&gt;-->
+                                                    <!--</div> &lt;!&ndash;&ndash;&gt;-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+
+                                        <!--</form>-->
+                                    <!--</div>-->
+                                    <!--<div class="ivu-modal-footer">-->
+                                        <!--<div>-->
+                                            <!--<button onclick="cancel(1)" type="button" class="ivu-btn ivu-btn-text">&lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt;-->
+                                                <!--<span>取消</span>-->
+                                            <!--</button>-->
+                                            <!--<button onclick="sure(1)" type="button" class="ivu-btn ivu-btn-primary">&lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt;-->
+                                                <!--<span>确定</span>-->
+                                            <!--</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+                <div class="ivu-form-item-content" style="margin-left: 100px;margin-bottom: 24px;">
+                    <button type="button" class="ivu-btn ivu-btn-primary">
+                        <span>按钮</span>
+                    </button>
+                </div>
+                <div class="ivu-form-item items" style="display: block; width: auto;" draggable="false">
+                    <label class="ivu-form-item-label" style="width: 100px;">文本域：</label>
+                    <div class="ivu-form-item-content" style="margin-left: 100px;">
+                        <div class="ivu-input-wrapper ivu-input-type">
+                            <textarea wrap="soft" autocomplete="off" spellcheck="false" placeholder="这是一个文本域" rows="5" maxlength="200" class="ivu-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="box" id="dragBox">
+                <h4>拖拽下面的组件到左侧</h4>
+                <hr>
+                <div id="drag1" draggable="true"
+                       ondragstart="drag(event)">
+                    <i class="iconfont">&#xe668;</i>
+                    <span class="textStyle">文本框</span>
+                </div>
+                <div id="drag2"  draggable="true"
+                   ondragstart="drag(event)">
+                    <i class="iconfont">&#xe7fb;</i>
+                    <span class="textStyle">按钮</span>
+                </div>
+                <div id="drag3"  draggable="true"
+                     ondragstart="drag(event)">
+                    <i style="font-size: 26px" class="iconfont">&#xe66f;</i>
+                    <span class="textStyle">文本域</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix visible-xs"></div>
+
+
+    </div>
+</div>
+</body>
+</html>
